@@ -63,7 +63,7 @@ export default function CompetitionPage() {
           </section>
           <section><h2>Submission history</h2><div className="plain-list">{state.submissions.length ? state.submissions.map((item) => <p key={item.id}><span>v{item.version} · {item.filename}</span><small>{item.language}</small></p>) : <p><span>No team submissions yet.</span></p>}</div></section>
         </>}
-        <section className="leaderboard"><div className="section-title"><h2>Leaderboard</h2><span>Active teams are selected automatically for scheduled ladder matches.</span></div>
+        <section className="leaderboard"><div className="section-title"><h2>Leaderboard</h2><span>Every active team is scheduled once per ladder round. New rounds begin every six hours.</span></div>
           <div className="leader-table">{state.leaderboard.map((team, index) => <div key={team.id} className={`leader-row${team.active_submission_id ? '' : ' inactive'}`}><b>{index + 1}</b><span>{team.name}</span><small>{team.member_count}/4</small><strong>{Math.round(team.rating)}</strong></div>)}</div>
         </section>
         {state.matches.length > 0 && <section><h2>Your recent matches</h2><div className="plain-list">{state.matches.map((match) => <p key={match.id}><span>{match.id}</span><small>{match.status}</small></p>)}</div></section>}
