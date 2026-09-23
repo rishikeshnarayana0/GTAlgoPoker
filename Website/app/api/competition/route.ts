@@ -58,7 +58,7 @@ export async function POST(request: Request) {
     }
     const paths: Record<string, string> = {
       create_team: '/competition/teams', join_team: '/competition/teams/join',
-      submission: '/competition/submissions', queue_match: '/competition/matches',
+      submission: '/competition/submissions',
     };
     const path = paths[action];
     if (!path) return json({ error: 'Unknown competition action.' }, { status: 400 });

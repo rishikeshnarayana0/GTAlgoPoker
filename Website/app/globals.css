@@ -357,9 +357,8 @@ a { color:inherit; text-decoration:none; }
 .plain-list p { min-height:52px; display:flex; align-items:center; justify-content:space-between; gap:20px; margin:0; border-bottom:1px solid #d9dde2; font-size:13px; }
 .plain-list small { color:var(--muted); text-transform:capitalize; }.plain-list span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .leaderboard { margin-top:40px; padding-top:48px; border-top:1px solid var(--gold); }.section-title { display:flex; align-items:end; justify-content:space-between; gap:24px; margin-bottom:20px; }.section-title h2 { margin:0; font-size:30px; }
-.leader-table { border-top:1px solid var(--navy); }.leader-table button { width:100%; min-height:55px; display:grid; grid-template-columns:40px 1fr 60px 75px; align-items:center; gap:12px; padding:0 14px; border:0; border-bottom:1px solid #d9dde2; background:#fff; color:var(--navy); cursor:pointer; text-align:left; }.leader-table button:hover,.leader-table button.selected { background:var(--gold); color:#000; }.leader-table button:disabled { cursor:not-allowed; opacity:.45; }.leader-table strong { text-align:right; }
-.queue-button { display:block; margin:24px 0 60px auto; }.queue-button:disabled { opacity:.4; cursor:not-allowed; }
-@media (max-width:700px) { .team-onboarding,.competition-grid,.team-summary { grid-template-columns:1fr; }.section-title { align-items:start; flex-direction:column; }.leader-table button { grid-template-columns:28px 1fr 48px 55px; }.competition-shell { width:min(100% - 30px,980px); padding-top:44px; } }
+.leader-table { border-top:1px solid var(--navy); }.leader-row { min-height:55px; display:grid; grid-template-columns:40px 1fr 60px 75px; align-items:center; gap:12px; padding:0 14px; border-bottom:1px solid #d9dde2; background:#fff; color:var(--navy); }.leader-row.inactive { opacity:.45; }.leader-table strong { text-align:right; }
+@media (max-width:700px) { .team-onboarding,.competition-grid,.team-summary { grid-template-columns:1fr; }.section-title { align-items:start; flex-direction:column; }.leader-row { grid-template-columns:28px 1fr 48px 55px; }.competition-shell { width:min(100% - 30px,980px); padding-top:44px; } }
 
 /* Account and verification */
 .account-link { max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }

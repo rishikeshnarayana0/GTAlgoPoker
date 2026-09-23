@@ -16,7 +16,6 @@ export default function CompetitionPage() {
   const [state, setState] = useState<State>(EMPTY);
   const [loaded, setLoaded] = useState(false);
   const [message, setMessage] = useState('');
-  const [selected, setSelected] = useState<string[]>([]);
 
   async function load() {
     const response = await fetch('/api/competition');
@@ -33,9 +32,9 @@ export default function CompetitionPage() {
     const response = await fetch('/api/competition', body instanceof FormData
       ? { method: 'POST', body }
       : { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
-    const data = await response.json().catch(() => ({})) as State & { error?: string; id?: string };
+    const data = await response.json().catch(() => ({})) as State & { error?: string };
     if (!response.ok) { setMessage(data.error ?? 'Request failed.'); return false; }
-    setMessage(data.id ? `Match ${data.id} is queued.` : 'Saved.');
+    setMessage('Saved.');
     await load(); return true;
   }
   async function formAction(event: FormEvent<HTMLFormElement>, action: string) {
@@ -48,11 +47,6 @@ export default function CompetitionPage() {
     event.preventDefault(); const form = new FormData(event.currentTarget); form.set('action', 'submission');
     if (await send(form)) event.currentTarget.reset();
   }
-  function toggle(id: string) {
-    setSelected((current) => current.includes(id) ? current.filter((item) => item !== id) : current.length < 6 ? [...current, id] : current);
-  }
-
-  const eligible = state.leaderboard.filter((team) => team.active_submission_id);
   return <main className="competition-page">
     <nav className="upload-nav"><a className="brand" href="/"><img src="/gt-poker-logo.jpeg" alt="AlgoPoker @ GT" /><span>AlgoPoker @ GT</span></a><div><a href="/">Home</a><AccountNav /></div></nav>
     <section className="competition-shell">
@@ -69,9 +63,8 @@ export default function CompetitionPage() {
           </section>
           <section><h2>Submission history</h2><div className="plain-list">{state.submissions.length ? state.submissions.map((item) => <p key={item.id}><span>v{item.version} · {item.filename}</span><small>{item.language}</small></p>) : <p><span>No team submissions yet.</span></p>}</div></section>
         </>}
-        <section className="leaderboard"><div className="section-title"><h2>Leaderboard</h2><span>Select six active teams to queue a match.</span></div>
-          <div className="leader-table">{state.leaderboard.map((team, index) => <button key={team.id} disabled={!team.active_submission_id} className={team.active_submission_id && selected.includes(team.active_submission_id) ? 'selected' : ''} onClick={() => team.active_submission_id && toggle(team.active_submission_id)}><b>{index + 1}</b><span>{team.name}</span><small>{team.member_count}/4</small><strong>{Math.round(team.rating)}</strong></button>)}</div>
-          <button className="queue-button" disabled={selected.length !== 6 || !state.team} onClick={() => send({ action: 'queue_match', submission_ids: selected, max_hands: 500 })}>Queue six-team match ({selected.length}/6)</button>
+        <section className="leaderboard"><div className="section-title"><h2>Leaderboard</h2><span>Active teams are selected automatically for scheduled ladder matches.</span></div>
+          <div className="leader-table">{state.leaderboard.map((team, index) => <div key={team.id} className={`leader-row${team.active_submission_id ? '' : ' inactive'}`}><b>{index + 1}</b><span>{team.name}</span><small>{team.member_count}/4</small><strong>{Math.round(team.rating)}</strong></div>)}</div>
         </section>
         {state.matches.length > 0 && <section><h2>Your recent matches</h2><div className="plain-list">{state.matches.map((match) => <p key={match.id}><span>{match.id}</span><small>{match.status}</small></p>)}</div></section>}
       </>}
